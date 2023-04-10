@@ -1,0 +1,135 @@
+<?php 
+session_start();
+include_once('../../core/db.php');
+include_once('../../core/helper.php');
+include_once('../../core/validation.php');
+include_once('../../core/image.php');
+$errors=[];
+if(checkRequestMethod('POST')) {
+    
+    // print_r($_POST);
+    // print_r($_FILES['image']['name']);
+
+// die;
+    foreach($_POST as $key =>$value) {
+        $$key= sanitizeInput($value);
+    }
+
+// validate name
+    if(!requiredVal($name)){
+        $errors[]="type name please";
+    }elseif(!MinVal($name,2)){
+        $errors[]="name must be at least 2 char"; 
+    }elseif(!MaxVal($name,30)){
+        $errors[]="name must be less than 30 char"; 
+    
+    }
+    // validate price
+    if(!requiredVal($price)){
+        $errors[]="type price please";
+    }elseif(!numericVal($price)){
+        $errors[]=" price must be number";
+    }
+    // validate  offer
+    if(!requiredVal($offer)){
+        $errors[]="type offer please";
+    }elseif(!numericVal($offer)){
+        $errors[]="offer must be number";
+    }
+    // validate description
+    if(!requiredVal($description)){
+        $errors[]="type description please";
+    }elseif(!MinVal($description,10)){
+        $errors[]="description must be at least 10 char"; 
+    }elseif(!MaxVal($description,200)){
+        $errors[]="description must be less than 200 char"; 
+        
+    }
+    
+//validate image
+if(!requiredVal($_FILES['image']['name'])){
+    $errors[]="there is no file to upload";
+}
+elseif(file_required()) {
+    $errors[]="there is no file to upload";
+
+}elseif(is_empty_file()){
+    $errors[]="this file is empty";
+}elseif(max_file_size(3145728)){
+    $errors[]="the file size is too large";
+}elseif(allwed()){
+    $errors[]="the file type not allwed uplode .png or .jpg";
+}elseif(move_file()){
+    $errors[]="Can't move file.";
+
+}
+
+
+
+
+
+
+// $targetDir = "../../uploade/product/";
+// $fileName = basename($_FILES["image"]["name"]);
+// $targetFilePath = $targetDir . $fileName;
+// $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+// if(isset($_POST["submit"]) && !empty($_FILES["file"]["name"])){
+//     // Allow certain file formats
+//     $allowTypes = array('jpg','png','jpeg','gif','pdf');
+//     if(in_array($fileType, $allowTypes)){
+//         // Upload file to server
+//         if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)){
+//             // Insert image file name into database
+//             $insert = $db->query("INSERT into images (file_name, uploaded_on) VALUES ('".$fileName."', NOW())");
+//             if($insert){
+//                 $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
+//             }else{
+//                 $statusMsg = "File upload failed, please try again.";
+//             } 
+//         }else{
+//             $statusMsg = "Sorry, there was an error uploading your file.";
+//         }
+//     }else{
+//         $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+//     }
+// }else{
+//     $statusMsg = 'Please select a file to upload.';
+// }
+
+
+
+
+
+// ///////////////////////////////////////////
+if(empty($errors)){
+//    $filepath= file_path();
+//     unlink($filepath); // Delete the temp file
+
+$sql="INSERT INTO `products` (`name`,`description`,`price`,`offer`,`category_id`,`image`)
+VALUES('$name','$description','$price','$offer','$category_id','$image')";
+
+if(mysqli_query($conn,$sql)){
+    $_SESSION["success"]="product  successfully inserted ";
+    
+}else{
+ $_SESSION["errors"]="error: not inserted";   
+}
+}else{
+    $_SESSION["errors"]=$errors;
+}
+
+
+header('location:../../view/product/create.php');
+die;
+    
+}
+
+
+
+
+
+
+
+
+
