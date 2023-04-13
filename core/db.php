@@ -36,3 +36,29 @@ $sql='CREATE TABLE IF NOT EXISTS `products`(
 
 )';
 $res=mysqli_query($conn,$sql);
+
+//create user
+
+
+
+
+$sql="CREATE TABLE IF NOT EXISTS `users`(
+    `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `name` VARCHAR(90) NOT NULL,
+    `email` VARCHAR(100) NOT NULL  UNIQUE,
+    `phone` VARCHAR(20) NOT NULL  UNIQUE,
+    `password` VARCHAR(100) NOT NULL,
+    `image` VARCHAR(300) NOT NULL,
+   )";
+
+$res=mysqli_query($conn,$sql);
+
+//cerate view
+
+//product_category view
+$sql="CREATE VIEW  `product_category` 
+AS SELECT products.id as product_id ,products.name product_name ,price ,offer ,image, description,categories.id as category_id ,categories.name as category_name
+
+FROM products INNER JOIN categories WHERE categories.id=products.category_id";
+
+// $res=mysqli_query($conn,$sql);

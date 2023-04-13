@@ -71,3 +71,35 @@ function numericVal($input){
     }
     return true;
 }
+
+// check is an email
+
+function is_email($email){
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+   return true;
+  } else {
+   return false;
+  }
+}
+
+// check is a phone number
+// If you want to clean the variable so that only + - . and 0-9 can be in it you can:
+function is_phone($number){
+    if (!filter_var($number, FILTER_SANITIZE_NUMBER_INT)) {
+       return true;
+      } else {
+       return false;
+      }
+    }
+
+
+   function is_password($input)
+    {
+    $regex = "/^(?=.*[A-Z])(?=.*\d).{8,16}+$/";
+    if (!preg_match($regex, $input)) {
+        return true;
+    } else {
+        return false;
+    }
+}

@@ -1,16 +1,15 @@
 
 <?php 
 
-define("URL", "http://localhost/eraasoft/task1/view/");
+define("URL", "http://localhost/eraasoft/php_ecommerce/view/");
 $url_product=URL."product/";
 $url_category=URL."category/";
-$url_client=[URL."clients/",URL."clients/create.php",URL."clients/portfolio.php"];
+$url_user=URL."user/";
 $url_employee=[URL."employees/",URL."employees/create.php",URL."employees/portfolio.php"];
 $url_order=[URL."orders/index.php"];
 $url_cart=[URL."cart/"];
 
 ?>
-
 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
@@ -21,14 +20,17 @@ $url_cart=[URL."cart/"];
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="http://localhost/eraasoft/php_ecommerce/index.php">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="<?= $url_product?>">Product</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="<?= $url_category?>">Category</a>
-        </li>
+        </li>   
+        <li class="nav-item">
+          <a class="nav-link" href="<?= $url_user?>">User</a>
+        </li> 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown

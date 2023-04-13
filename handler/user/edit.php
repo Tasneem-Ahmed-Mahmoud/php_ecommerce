@@ -5,10 +5,10 @@ include_once('../../core/db.php');
 include_once('../../core/helper.php');
 if(isset($_POST['id'])) {
     $id= $_POST['id'] ;
-    $product=get_row('products', $id, $conn);
-    $_SESSION['product']=$product;
-    // print_r( $_SESSION['product']);
+    $user=get_row('users', $id, $conn);
+    $_SESSION['user']=$user;
+    // print_r( $_SESSION['user']);
     // die;
-    header('location:../../view/product/edit.php');
+    header('location:../../view/user/edit.php');
     die;
 }

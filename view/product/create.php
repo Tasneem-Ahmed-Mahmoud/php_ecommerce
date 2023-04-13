@@ -47,7 +47,8 @@ echo $_SESSION["success"];?>
 </div>
 <div class="mb-3">
   <label for="exampleFormControlInput1" class="form-label">Description</label>
-  <input type="text" class="form-control" id="exampleFormControlInput1"name="description"  >
+  <textarea name="" id="" cols="30" rows="10"        name="description"   ></textarea>
+  
 </div>
 <div class="mb-3">
   <label for="exampleFormControlInput1" class="form-label">Price</label>

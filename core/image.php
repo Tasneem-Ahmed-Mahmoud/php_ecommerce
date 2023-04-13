@@ -1,37 +1,39 @@
 <?php
 
-function file_required(){
+// function file_required($f_name){
 
-    if (!isset($_FILES['image'])) {
-        //  die("There is no file to upload.");
-        return true;
-     }else{
-        return false;
-     }
-}
+//     if (!isset($_FILES[$f_name])) {
+//         //  die("There is no file to upload.");
+//         return true;
+//      }else{
+//         return false;
+//      }
+// }
 
- 
+// return temp name of file
+function tmp_name($f_name){
+    $filepath = $_FILES[$f_name]['tmp_name'];
 
-function file_path(){
-    $filepath = $_FILES['image']['tmp_name'];
     return $filepath;
 }
-function file_size(){
-    $file_path=file_path();
-    $fileSize = filesize($file_path);
+// return file size 
+function file_size($f_name){
+    $tmp_name=tmp_name($f_name);
+    $fileSize = filesize($tmp_name);
     return $fileSize;
 }
-function file_type(){
-    $file_path=file_path();
+// return file type
+function file_type($f_name){
+    $tmp_name=tmp_name($f_name);
     $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-    $filetype = finfo_file($fileinfo, $file_path);
+    $filetype = finfo_file($fileinfo, $tmp_name);
     return $filetype;
     
 }
 
-
-function is_empty_file(){
-    $file_size=file_size() ;
+// chek size of file 
+function is_empty_file($f_name){
+    $file_size=file_size($f_name) ;
     if ($file_size === 0) {
         // die("The file is empty.");
         return true;
@@ -40,9 +42,10 @@ function is_empty_file(){
      }
      
 }
+// chek  max size of file 
 
-function max_file_size($size){
-    $fileSize=file_size();
+function max_file_size($size,$f_name){
+    $fileSize=file_size($f_name);
     if ($fileSize >$size ) { // 3 MB (1 byte * 1024 * 1024 * 3 (for 3 MB))
         // die("The file is too large");
         return true;
@@ -61,9 +64,9 @@ function allowed_type(){
     return $allowedTypes;
 }
 
-function allwed(){
+function allwed($f_name){
     $allowedTypes=allowed_type();
-    $filetype=file_type();
+    $filetype=file_type($f_name);
     if(!in_array($filetype, array_keys($allowedTypes))) {
         // die("File not allowed.");
         return true;
@@ -74,33 +77,22 @@ function allwed(){
 }
 
 
-function move_file_to_directory (){
-    $filepath= file_path();
-    $filetype=file_type();
+function move_file_to_directory ($f_name,$folder){
+    $tmp_name=tmp_name($f_name);
+    $filetype=file_type($f_name);
     $allowedTypes=allowed_type();
-    $filename  = basename($filepath); // I'm using the original name here, but you can also change the name of the file here
-$extension = $allowedTypes[$filetype];
-$targetDirectory = "../../uploads/product"; // __DIR__ is the directory of the current PHP file
+  
+    $filename  = basename($tmp_name); // I'm using the original name here, but you can also change the name of the file here
+echo ($filename);
+    $extension = $allowedTypes[$filetype];
+$targetDirectory = "../../uploads/$folder"; 
 
-$newFilepath = $targetDirectory . "/" . $filename;
-return $newFilepath;
-}
+$newFilepath = $targetDirectory . "/" . $filename.".".$extension ;
 
-function move_file(){
-    // die(move_file_to_directory ());
-   $newFilepath=move_file_to_directory ();
-   $filepath=file_path();
-//    die($filepath);
-//    copy($filepath, $newFilepath)
-$move=move_uploaded_file($filepath, $newFilepath);
-    if (!$move) { // Copy the file, returns false if failed
-        // die("Can't move file.");
-        return true;
-    }else{
-        return false;
-    }
-    // unlink($filepath); // Delete the temp file
+   $ftmp_name=tmp_name($f_name);
+ move_uploaded_file($ftmp_name, $newFilepath);
+
     
-    // echo "File uploaded successfully :)";
+  return  $filename.".".$extension;
 }
 
